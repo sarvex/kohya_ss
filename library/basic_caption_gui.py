@@ -34,12 +34,12 @@ def caption_images(
         log.info(f'Captioning files in {images_dir} with {caption_text}...')
 
         # Build the command to run caption.py
-        run_cmd = f'python "tools/caption.py"'
+        run_cmd = 'python "tools/caption.py"'
         run_cmd += f' --caption_text="{caption_text}"'
 
         # Add optional flags to the command
         if overwrite:
-            run_cmd += f' --overwrite'
+            run_cmd += ' --overwrite'
         if caption_ext:
             run_cmd += f' --caption_file_ext="{caption_ext}"'
 
@@ -71,12 +71,11 @@ def caption_images(
                 search_text=find_text,
                 replace_text=replace_text,
             )
-    else:
-        if prefix or postfix:
-            # Show a message if modification is not possible without overwrite option enabled
-            msgbox(
-                'Could not modify caption files with requested change because the "Overwrite existing captions in folder" option is not selected.'
-            )
+    elif prefix or postfix:
+        # Show a message if modification is not possible without overwrite option enabled
+        msgbox(
+            'Could not modify caption files with requested change because the "Overwrite existing captions in folder" option is not selected.'
+        )
 
     log.info('Captioning done.')
 

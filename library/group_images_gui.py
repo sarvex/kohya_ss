@@ -35,11 +35,11 @@ def group_images(
     run_cmd += f' "{output_folder}"'
     run_cmd += f' {(group_size)}'
     if include_subfolders:
-        run_cmd += f' --include_subfolders'
+        run_cmd += ' --include_subfolders'
     if do_not_copy_other_files:
-        run_cmd += f' --do_not_copy_other_files'
+        run_cmd += ' --do_not_copy_other_files'
     if generate_captions:
-        run_cmd += f' --caption'
+        run_cmd += ' --caption'
         if caption_ext:
             run_cmd += f' --caption_ext={caption_ext}'
 

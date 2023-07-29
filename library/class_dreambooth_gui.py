@@ -66,9 +66,7 @@ class Dreambooth:
                 return obj
             if isinstance(obj, dict):
                 return {k: serialize(v) for k, v in obj.items()}
-            if hasattr(obj, "__dict__"):
-                return serialize(vars(obj))
-            return str(obj)  # Fallback for objects that can't be serialized
+            return serialize(vars(obj)) if hasattr(obj, "__dict__") else str(obj)
 
         try:
             with open(filepath, 'w') as outfile:

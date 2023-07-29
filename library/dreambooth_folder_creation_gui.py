@@ -73,33 +73,31 @@ def dreambooth_folder_preparation(
         log.info(f'Copy {util_training_images_dir_input} to {training_dir}...')
         shutil.copytree(util_training_images_dir_input, training_dir)
 
-    if not util_regularization_images_dir_input == '':
-        # Create the regularization_dir path
-        if not util_regularization_images_repeat_input > 0:
-            log.info('Repeats is missing... not copying regularisation images...')
-        else:
-            regularization_dir = os.path.join(
-                util_training_dir_output,
-                f'reg/{int(util_regularization_images_repeat_input)}_{util_class_prompt_input}',
-            )
-
-            # Remove folders if they exist
-            if os.path.exists(regularization_dir):
-                log.info(f'Removing existing directory {regularization_dir}...')
-                shutil.rmtree(regularization_dir)
-
-            # Copy the regularisation images to their respective directories
-            log.info(
-                f'Copy {util_regularization_images_dir_input} to {regularization_dir}...'
-            )
-            shutil.copytree(
-                util_regularization_images_dir_input, regularization_dir
-            )
-    else:
+    if util_regularization_images_dir_input == '':
         log.info(
             'Regularization images directory is missing... not copying regularisation images...'
         )
 
+    elif util_regularization_images_repeat_input <= 0:
+        log.info('Repeats is missing... not copying regularisation images...')
+    else:
+        regularization_dir = os.path.join(
+            util_training_dir_output,
+            f'reg/{int(util_regularization_images_repeat_input)}_{util_class_prompt_input}',
+        )
+
+        # Remove folders if they exist
+        if os.path.exists(regularization_dir):
+            log.info(f'Removing existing directory {regularization_dir}...')
+            shutil.rmtree(regularization_dir)
+
+        # Copy the regularisation images to their respective directories
+        log.info(
+            f'Copy {util_regularization_images_dir_input} to {regularization_dir}...'
+        )
+        shutil.copytree(
+            util_regularization_images_dir_input, regularization_dir
+        )
     # create log and model folder
     # Check if the log folder exists and create it if it doesn't
     if not os.path.exists(os.path.join(util_training_dir_output, 'log')):

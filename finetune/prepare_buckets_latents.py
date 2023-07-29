@@ -43,15 +43,17 @@ def get_npz_filename(data_dir, image_key, is_full_path, recursive):
         relative_path = ""
 
     if recursive and relative_path:
-        return os.path.join(data_dir, relative_path, base_name) + ".npz"
+        return f"{os.path.join(data_dir, relative_path, base_name)}.npz"
     else:
-        return os.path.join(data_dir, base_name) + ".npz"
+        return f"{os.path.join(data_dir, base_name)}.npz"
 
 
 def main(args):
     # assert args.bucket_reso_steps % 8 == 0, f"bucket_reso_steps must be divisible by 8 / bucket_reso_stepは8で割り切れる必要があります"
     if args.bucket_reso_steps % 8 > 0:
-        print(f"resolution of buckets in training time is a multiple of 8 / 学習時の各bucketの解像度は8単位になります")
+        print(
+            "resolution of buckets in training time is a multiple of 8 / 学習時の各bucketの解像度は8単位になります"
+        )
 
     train_data_dir_path = Path(args.train_data_dir)
     image_paths: List[str] = [str(p) for p in train_util.glob_images_pathlib(train_data_dir_path, args.recursive)]
@@ -76,7 +78,7 @@ def main(args):
     vae.to(DEVICE, dtype=weight_dtype)
 
     # bucketのサイズを計算する
-    max_reso = tuple([int(t) for t in args.max_resolution.split(",")])
+    max_reso = tuple(int(t) for t in args.max_resolution.split(","))
     assert len(max_reso) == 2, f"illegal resolution (not 'width,height') / 画像サイズに誤りがあります。'幅,高さ'で指定してください: {args.max_resolution}"
 
     bucket_manager = train_util.BucketManager(

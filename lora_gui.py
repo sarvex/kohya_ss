@@ -175,19 +175,19 @@ def save_configuration(
 
     original_file_path = file_path
 
-    save_as_bool = True if save_as.get('label') == 'True' else False
+    save_as_bool = save_as.get('label') == 'True'
 
     if save_as_bool:
         log.info('Save as...')
         file_path = get_saveasfile_path(file_path)
     else:
         log.info('Save...')
-        if file_path == None or file_path == '':
+        if file_path is None or file_path == '':
             file_path = get_saveasfile_path(file_path)
 
     # log.info(file_path)
 
-    if file_path == None or file_path == '':
+    if file_path is None or file_path == '':
         return original_file_path  # In case a file_path was provided and the user decide to cancel the open action
 
     # Extract the destination directory from the file path
@@ -319,8 +319,8 @@ def open_configuration(
     # Get list of function parameters and values
     parameters = list(locals().items())
 
-    ask_for_file = True if ask_for_file.get('label') == 'True' else False
-    apply_preset = True if apply_preset.get('label') == 'True' else False
+    ask_for_file = ask_for_file.get('label') == 'True'
+    apply_preset = apply_preset.get('label') == 'True'
 
     # Check if we are "applying" a preset or a config
     if apply_preset:
@@ -341,7 +341,7 @@ def open_configuration(
     if ask_for_file:
         file_path = get_file_path(file_path)
 
-    if not file_path == '' and not file_path == None:
+    if file_path != '' and file_path is not None:
         # Load variables from JSON file
         with open(file_path, 'r') as f:
             my_data = json.load(f)
@@ -356,7 +356,7 @@ def open_configuration(
     values = [file_path]
     for key, value in parameters:
         # Set the value in the dictionary to the corresponding value in `my_data`, or the default value if not found
-        if not key in ['ask_for_file', 'apply_preset', 'file_path']:
+        if key not in ['ask_for_file', 'apply_preset', 'file_path']:
             json_value = my_data.get(key)
             # if isinstance(json_value, str) and json_value == '':
             #     # If the JSON value is an empty string, use the default value

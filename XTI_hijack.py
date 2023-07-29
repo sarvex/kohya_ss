@@ -34,15 +34,11 @@ def unet_forward_XTI(
     # 多分画質が悪くなるので、64で割り切れるようにしておくのが良い
     default_overall_up_factor = 2**self.num_upsamplers
 
-    # upsample size should be forwarded when sample is not a multiple of `default_overall_up_factor`
-    # 64で割り切れないときはupsamplerにサイズを伝える
-    forward_upsample_size = False
     upsample_size = None
 
-    if any(s % default_overall_up_factor != 0 for s in sample.shape[-2:]):
-        # logger.info("Forward upsample size to force interpolation output size.")
-        forward_upsample_size = True
-
+    forward_upsample_size = any(
+        (s % default_overall_up_factor != 0 for s in sample.shape[-2:])
+    )
     # 1. time
     timesteps = timestep
     timesteps = self.handle_unusual_timesteps(sample, timesteps)  # 変な時だけ処理
@@ -114,10 +110,7 @@ def unet_forward_XTI(
     sample = self.conv_act(sample)
     sample = self.conv_out(sample)
 
-    if not return_dict:
-        return (sample,)
-
-    return SampleOutput(sample=sample)
+    return (sample, ) if not return_dict else SampleOutput(sample=sample)
 
 
 def downblock_forward_XTI(

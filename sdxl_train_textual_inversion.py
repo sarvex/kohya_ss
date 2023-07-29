@@ -36,8 +36,7 @@ class SdxlTextualInversionTrainer(train_textual_inversion.TextualInversionTraine
         return sdxl_model_util.MODEL_VERSION_SDXL_BASE_V0_9, [text_encoder1, text_encoder2], vae, unet
 
     def load_tokenizer(self, args):
-        tokenizer = sdxl_train_util.load_tokenizers(args)
-        return tokenizer
+        return sdxl_train_util.load_tokenizers(args)
 
     def get_text_cond(self, args, accelerator, batch, tokenizers, text_encoders, weight_dtype):
         input_ids1 = batch["input_ids"]
@@ -71,8 +70,7 @@ class SdxlTextualInversionTrainer(train_textual_inversion.TextualInversionTraine
         vector_embedding = torch.cat([pool2, embs], dim=1).to(weight_dtype)
         text_embedding = torch.cat([encoder_hidden_states1, encoder_hidden_states2], dim=2).to(weight_dtype)
 
-        noise_pred = unet(noisy_latents, timesteps, text_embedding, vector_embedding)
-        return noise_pred
+        return unet(noisy_latents, timesteps, text_embedding, vector_embedding)
 
     def sample_images(self, accelerator, args, epoch, global_step, device, vae, tokenizer, text_encoder, unet, prompt_replacement):
         sdxl_train_util.sample_images(
@@ -114,10 +112,7 @@ class SdxlTextualInversionTrainer(train_textual_inversion.TextualInversionTraine
 
 
 def setup_parser() -> argparse.ArgumentParser:
-    parser = train_textual_inversion.setup_parser()
-    # don't add sdxl_train_util.add_sdxl_training_arguments(parser): because it only adds text encoder caching
-    # sdxl_train_util.add_sdxl_training_arguments(parser)
-    return parser
+    return train_textual_inversion.setup_parser()
 
 
 if __name__ == "__main__":

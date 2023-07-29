@@ -91,8 +91,7 @@ class TextualInversionTrainer:
         return model_util.get_model_version_str_for_sd1_sd2(args.v2, args.v_parameterization), text_encoder, vae, unet
 
     def load_tokenizer(self, args):
-        tokenizer = train_util.load_tokenizer(args)
-        return tokenizer
+        return train_util.load_tokenizer(args)
 
     def assert_token_string(self, token_string, tokenizers: CLIPTokenizer):
         pass
@@ -100,12 +99,12 @@ class TextualInversionTrainer:
     def get_text_cond(self, args, accelerator, batch, tokenizers, text_encoders, weight_dtype):
         with torch.enable_grad():
             input_ids = batch["input_ids"].to(accelerator.device)
-            encoder_hidden_states = train_util.get_hidden_states(args, input_ids, tokenizers[0], text_encoders[0], None)
-            return encoder_hidden_states
+            return train_util.get_hidden_states(
+                args, input_ids, tokenizers[0], text_encoders[0], None
+            )
 
     def call_unet(self, args, accelerator, unet, noisy_latents, timesteps, text_conds, batch, weight_dtype):
-        noise_pred = unet(noisy_latents, timesteps, text_conds).sample
-        return noise_pred
+        return unet(noisy_latents, timesteps, text_conds).sample
 
     def sample_images(self, accelerator, args, epoch, global_step, device, vae, tokenizer, text_encoder, unet, prompt_replacement):
         train_util.sample_images(

@@ -322,9 +322,7 @@ class PipelineLike:
 
         # Textual Inversion
         self.token_replacements_list = []
-        for _ in range(len(self.text_encoders)):
-            self.token_replacements_list.append({})
-
+        self.token_replacements_list.extend({} for _ in self.text_encoders)
         # ControlNet # not supported yet
         self.control_nets: List[ControlNetInfo] = []
         self.control_net_enabled = True  # control_netsが空ならTrueでもFalseでもControlNetは動作しない
